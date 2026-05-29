@@ -6,17 +6,16 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # 1. Cambiamos a v4.2.2 o superior (ya compila nativo con nodos actuales)
+      - uses: actions/checkout@v4.2.2
       
+      # 2. Cambiamos a la v5 de setup-uv, que ya apunta de forma nativa a Node 24
       - name: Instalar uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
 
@@ -24,4 +23,4 @@ jobs:
         run: uv sync --frozen
           
       - name: Ejecutar Tests
-        run: uv run pytest 
+        run: uv run pytest
